@@ -3,15 +3,12 @@ package MineSweeper;
 import java.util.Random;
 
 public class Grid {
-    private Cell[][] cells;
+    private Cell[][] cells; // cells is 2d array of Cell class, 2d like a table with rows and columns.
     private int rows;
     private int columns;
     private int totalMines;
 
-    // how to implement 100 cells?
-    // 10 rows
-    // 10 columns
-
+    // constructor to store variables and methods
     public Grid(int rows, int columns, int totalMines) {
         this.rows = rows;
         this.columns = columns;
@@ -24,6 +21,7 @@ public class Grid {
     }
 
     // initialize all cells as non-bomb cells
+    // iterate every single cell to be non-bomb
     private void initializeCells() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -33,6 +31,8 @@ public class Grid {
     }
 
     // randomly place bombs in the grid
+    // under the condition totalMines bigger than bombsPlaced, loop every single
+    // cell, place bombs randomly.
     private void placeBombs() {
         Random randomBomb = new Random();
         int bombsPlaced = 0;
@@ -50,7 +50,9 @@ public class Grid {
 
     }
 
-    // Calculate the number of neighbor mines for each cell
+    // iterate all cells, update number of neighbor mines for each cell
+    // setNeighborMines from Cell class, set with number of count
+    // use method countMinesAround to calculate the count
 
     private void calculateNeighborMines() {
         for (int i = 0; i < rows; i++) {
@@ -66,8 +68,14 @@ public class Grid {
     // Count mines around a specific cell
     private int countMinesAround(int row, int column) {
         int count = 0;
+
+        // two for loops iterate the above row, underneath row, left column and right
+        // column which are 8 cells around the specific cell
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = column - 1; j <= column + 1; j++) {
+                // ensure i and j > 0, no negative index and don't beyond the rows and columns,
+                // doesn't include the cell
+                // itself, only check around 8 cells and if there is a bomb, count++
                 if (i >= 0 && i < rows && j >= 0 && j < columns && !(i == row && j == column) && cells[i][j].isBomb()) {
                     count++;
                 }
@@ -79,6 +87,8 @@ public class Grid {
     // reveal a cell
 
     public void revealCell(int row, int column) {
+        // ensure rwo and column > 0, no negative index and don't beyond the rows and
+        // columns,
         if (row >= 0 && row < rows && column >= 0 && column < columns) {
             if (cells[row][column].isBomb()) {
                 System.out.println("Boom! You hit a mine, game over");
@@ -90,7 +100,7 @@ public class Grid {
         }
     }
 
-    // print the current state of the≠ grid
+    // print the current state of the grid
     public void printGrid() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -101,6 +111,7 @@ public class Grid {
                         System.out.print(cells[i][j].getNeighborMines() + " ");
                     }
                 } else {
+                    // no revealed, show .
                     System.out.print(". ");
                 }
             }
