@@ -7,7 +7,7 @@ public class Cell {
 
   public Cell(boolean bomb) {
     this.bomb = bomb;
-    this.revealed = false; // Cells start as unrevealed
+    this.revealed = false; // Cells start as closed
     this.neighborMines = 0;
   }
 
